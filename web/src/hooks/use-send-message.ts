@@ -1,7 +1,7 @@
 import message from '@/components/ui/message';
 import { Authorization } from '@/constants/authorization';
+import { BeginQuery } from '@/interfaces/database/agent';
 import { IReferenceObject } from '@/interfaces/database/chat';
-import { BeginQuery } from '@/pages/agent/interface';
 import { getAuthorization } from '@/utils/authorization-util';
 import { EventSourceParserStream } from 'eventsource-parser/stream';
 import { useCallback, useRef, useState } from 'react';

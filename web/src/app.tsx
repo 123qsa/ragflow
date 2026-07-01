@@ -15,6 +15,7 @@ import weekYear from 'dayjs/plugin/weekYear';
 import weekday from 'dayjs/plugin/weekday';
 import React, { useEffect } from 'react';
 import { RouterProvider } from 'react-router';
+import { AutoLoginGuard } from './components/auto-login-guard';
 import { ThemeProvider } from './components/theme-provider';
 import { TooltipProvider } from './components/ui/tooltip';
 import { ThemeEnum } from './constants/common';
@@ -107,7 +108,9 @@ RouterProviderWrapper.whyDidYouRender = false;
 export default function AppContainer() {
   return (
     <RootProvider>
-      <RouterProviderWrapper router={routers} />
+      <AutoLoginGuard>
+        <RouterProviderWrapper router={routers} />
+      </AutoLoginGuard>
     </RootProvider>
   );
 }

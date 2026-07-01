@@ -5,7 +5,7 @@ import { useClickDrawer } from '@/components/pdf-drawer/hooks';
 import { MessageType } from '@/constants/chat';
 import { useFetchChat, useGetChatSearchParams } from '@/hooks/use-chat-request';
 import { useFetchUserInfo } from '@/hooks/use-user-setting-request';
-import { IClientConversation } from '@/interfaces/database/chat';
+import { IClientConversation, IMessage } from '@/interfaces/database/chat';
 import { buildMessageUuidWithRole } from '@/utils/chat';
 import { useEffect } from 'react';
 import {
@@ -21,12 +21,14 @@ interface IProps {
   controller: AbortController;
   stopOutputMessage(): void;
   conversation: IClientConversation;
+  onMessagesChange?: (messages: IMessage[]) => void;
 }
 
 export function SingleChatBox({
   controller,
   stopOutputMessage,
   conversation,
+  onMessagesChange,
 }: IProps) {
   const {
     value,
@@ -84,6 +86,10 @@ export function SingleChatBox({
       setDerivedMessages([]);
     }
   }, [conversationId, setDerivedMessages]);
+
+  useEffect(() => {
+    onMessagesChange?.(derivedMessages);
+  }, [derivedMessages, onMessagesChange]);
 
   return (
     <section className="flex flex-col h-full gap-4">

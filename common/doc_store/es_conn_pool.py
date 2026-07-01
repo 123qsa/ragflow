@@ -20,7 +20,7 @@ from elasticsearch import Elasticsearch
 from common import settings
 from common.decorator import singleton
 
-ATTEMPT_TIME = 2
+ATTEMPT_TIME = 30
 
 
 @singleton
@@ -52,15 +52,18 @@ class ElasticSearchConnectionPool:
             raise Exception(msg)
 
     def _connect(self):
-        self.es_conn = Elasticsearch(
-            self.ES_CONFIG["hosts"].split(","),
-            basic_auth=(self.ES_CONFIG["username"], self.ES_CONFIG[
-                "password"]) if "username" in self.ES_CONFIG and "password" in self.ES_CONFIG else None,
-            verify_certs= self.ES_CONFIG.get("verify_certs", False),
-            timeout=600 )
-        if self.es_conn:
-            self.info = self.es_conn.info()
-            return True
+        try:
+            self.es_conn = Elasticsearch(
+                self.ES_CONFIG["hosts"].split(","),
+                basic_auth=(self.ES_CONFIG["username"], self.ES_CONFIG[
+                    "password"]) if "username" in self.ES_CONFIG and "password" in self.ES_CONFIG else None,
+                verify_certs= self.ES_CONFIG.get("verify_certs", False),
+                timeout=600 )
+            if self.es_conn:
+                self.info = self.es_conn.info()
+                return True
+        except Exception:
+            self.es_conn = None
         return False
 
     def get_conn(self):

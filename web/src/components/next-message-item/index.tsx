@@ -137,7 +137,9 @@ function MessageItem({
           [styles.messageUserText]: !isAssistant,
           'bg-bg-card': !isAssistant,
         })}
-        dir={getDirAttribute(messageContent.replace(citationMarkerReg, ''))}
+        dir={getDirAttribute(
+          (messageContent || '').replace(citationMarkerReg, ''),
+        )}
       >
         {item.data ? (
           children

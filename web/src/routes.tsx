@@ -122,18 +122,9 @@ const routeConfigOptions = [
     layout: false,
   },
   {
-    path: Routes.AgentShare,
-    Component: () => import('@/pages/agent/share'),
-    layout: false,
-  },
-  {
     path: Routes.ChatWidget,
     Component: () => import('@/pages/next-chats/widget'),
     layout: false,
-  },
-  {
-    path: Routes.AgentList,
-    Component: () => import('@/pages/agents'),
   },
   {
     path: '/document/:id',
@@ -146,8 +137,11 @@ const routeConfigOptions = [
     layout: false,
   },
   {
+    path: Routes.Chat + '/:id',
+    Component: () => import('@/pages/next-chats/chat'),
+  },
+  {
     path: Routes.Root,
-    layout: false,
     Component: () => import('@/layouts/root-layout'),
     loader: ({ request }: { request: Request }) => {
       const url = new URL(request.url);
@@ -161,19 +155,9 @@ const routeConfigOptions = [
     },
     children: [
       {
-        path: Routes.Root,
-        Component: () => import('@/pages/home'),
+        index: true,
+        Component: () => import('@/pages/stocks'),
       },
-    ],
-  },
-  {
-    path: Routes.Chat + '/:id',
-    Component: () => import('@/pages/next-chats/chat'),
-  },
-  {
-    path: Routes.Root,
-    Component: () => import('@/layouts/root-layout'),
-    children: [
       {
         path: Routes.Datasets,
         Component: () => import('@/pages/datasets'),
@@ -198,16 +182,9 @@ const routeConfigOptions = [
             path: `${Routes.DatasetBase}${Routes.DataSetOverview}/:id`,
             Component: () => import('@/pages/dataset/dataset-overview'),
           },
-          {
-            path: `${Routes.DatasetBase}${Routes.DataSetSetting}/:id`,
-            Component: () => import('@/pages/dataset/dataset-setting'),
-          },
         ],
       },
-      {
-        path: Routes.Chats,
-        Component: () => import('@/pages/next-chats'),
-      },
+
       {
         path: Routes.Searches,
         Component: () => import('@/pages/next-searches'),
@@ -216,15 +193,6 @@ const routeConfigOptions = [
         path: `${Routes.Search}/:id`,
         layout: false,
         Component: () => import('@/pages/next-search'),
-      },
-      {
-        path: Routes.Agents,
-        Component: () => import('@/pages/agents'),
-      },
-      {
-        path: Routes.AgentTemplates,
-        layout: false,
-        Component: () => import('@/pages/agents/agent-templates'),
       },
       {
         path: Routes.Memories,
@@ -307,24 +275,6 @@ const routeConfigOptions = [
   {
     path: `${Routes.SearchShare}`,
     Component: () => import('@/pages/next-search/share'),
-  },
-  {
-    path: Routes.Agent,
-    children: [
-      {
-        path: `${Routes.Agent}/:id`,
-        Component: () => import('@/pages/agent'),
-      },
-      {
-        path: Routes.AgentExplore,
-        Component: () => import('@/pages/agent/explore'),
-        errorElement: <FallbackComponent />,
-      },
-    ],
-  },
-  {
-    path: `${Routes.AgentLogPage}/:id`,
-    Component: () => import('@/pages/agents/agent-log-page'),
   },
   {
     path: `${Routes.DataflowResult}`,

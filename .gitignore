@@ -233,3 +233,13 @@ internal/cpp/cmake-build-debug/
 bin/*
 !bin/.gitkeep
 .claude/settings.local.json
+# Financial QA - 敏感文件和运行时数据
+examples/financial_qa/.api_key
+examples/financial_qa/financial_qa.db
+examples/financial_qa/downloads/
+examples/financial_qa/api_server.log
+examples/financial_qa/scheduler.log
+examples/financial_qa/sync_scheduler.log
+examples/financial_qa/__pycache__/
+examples/financial_qa/.venv/
+examples/financial_qa/.env

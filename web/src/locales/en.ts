@@ -108,6 +108,8 @@ export default {
     header: {
       knowledgeBase: 'Dataset',
       chat: 'Chat',
+      stocks: 'Stocks',
+      announcements: 'Announcements',
       register: 'Register',
       signin: 'Sign in',
       home: 'Home',

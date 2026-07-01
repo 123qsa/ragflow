@@ -314,3 +314,21 @@ export interface IWebhookTrace {
   next_since_ts: number;
   finished: boolean;
 }
+
+// Moved from @/pages/agent/interface — used by chat message sending
+export interface BeginQuery {
+  key: string;
+  type: string;
+  value: string;
+  optional: boolean;
+  name: string;
+  options: (number | string | boolean)[];
+}
+
+export type IInputs = {
+  avatar: string;
+  title: string;
+  inputs: Record<string, BeginQuery>;
+  prologue: string;
+  mode: string;
+};

@@ -9,6 +9,7 @@ import {
   IAgentLogsResponse,
   IFlow,
   IFlowTemplate,
+  IInputs,
   IPipeLineListRequest,
   ITraceData,
   IWebhookTrace,
@@ -18,7 +19,6 @@ import {
   IDebugSingleRequestBody,
 } from '@/interfaces/request/agent';
 import i18n from '@/locales/config';
-import { IInputs } from '@/pages/agent/interface';
 import { useGetSharedChatSearchParams } from '@/pages/next-chats/hooks/use-send-shared-message';
 import agentService, {
   createAgentSession,

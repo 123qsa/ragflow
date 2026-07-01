@@ -1,6 +1,7 @@
 import { currentReg, parseCitationIndex } from '@/utils/chat';
 
 export const extractNumbersFromMessageContent = (content: string) => {
+  if (!content) return [];
   const matches = content.match(currentReg);
   if (matches) {
     const list = matches

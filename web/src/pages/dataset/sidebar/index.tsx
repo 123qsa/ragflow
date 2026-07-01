@@ -3,12 +3,7 @@ import { isEmpty } from 'lodash';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import {
-  LucideFolderOpen,
-  LucideLogs,
-  LucideSettings,
-  LucideTextSearch,
-} from 'lucide-react';
+import { LucideFolderOpen, LucideLogs, LucideTextSearch } from 'lucide-react';
 
 import { IconFontFill } from '@/components/icon-font';
 import { RAGFlowAvatar } from '@/components/ragflow-avatar';
@@ -49,11 +44,6 @@ export function SideBar({ dataset: data }: PropType) {
         icon: <LucideLogs className="size-[1em]" />,
         label: t(`knowledgeDetails.overview`),
         key: Routes.DataSetOverview,
-      },
-      {
-        icon: <LucideSettings className="size-[1em]" />,
-        label: t(`knowledgeDetails.configuration`),
-        key: Routes.DataSetSetting,
       },
     ];
 

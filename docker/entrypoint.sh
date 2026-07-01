@@ -273,65 +273,84 @@ ensure_docling
 ensure_db_init
 
 if [[ "${INIT_MODEL_PROVIDER_TABLES}" -eq 1 ]]; then
-    echo "Running model provider table migrations..."
-    "$PY" tools/scripts/mysql_migration.py \
-        --stages tenant_model_provider,tenant_model_instance,tenant_model,model_id_config \
-        --config conf/service_conf.yaml \
-        --execute \
-        --database-version "v0.26.0" \
-        --mark-database-version-on-success
-    echo "Model provider table migrations completed."
+    if [[ -f "tools/scripts/mysql_migration.py" ]]; then
+        echo "Running model provider table migrations..."
+        "$PY" tools/scripts/mysql_migration.py \
+            --stages tenant_model_provider,tenant_model_instance,tenant_model,model_id_config \
+            --config conf/service_conf.yaml \
+            --execute \
+            --database-version "v0.26.0" \
+            --mark-database-version-on-success
+        echo "Model provider table migrations completed."
+    else
+        echo "Warning: tools/scripts/mysql_migration.py not found, skipping model provider table migrations."
+    fi
 fi
 
 if [[ "${ENABLE_WEBSERVER}" -eq 1 ]]; then
     echo "Starting nginx..."
     /usr/sbin/nginx
 
-    while true; do
-        echo "Attempt to start RAGFlow server..."
-        "$PY" api/ragflow_server.py ${INIT_SUPERUSER_ARGS}
-        echo "RAGFlow python server started."
-        sleep 1;
-    done &
+    (
+        set +e
+        while true; do
+            echo "Attempt to start RAGFlow server..."
+            "$PY" api/ragflow_server.py ${INIT_SUPERUSER_ARGS}
+            echo "RAGFlow python server started."
+            sleep 1;
+        done
+    ) &
 
     if [[ "${API_PROXY_SCHEME}" == "hybrid" ]]; then
-        while true; do
-            echo "Attempt to start RAGFlow go server..."
-            wait_for_server "http://127.0.0.1:9380/api/v1/system/healthz" "ragflow_server"
-            echo "Starting RAGFlow go server..."
-            bin/server_main
-            sleep 1;
-        done &
+        (
+            set +e
+            while true; do
+                echo "Attempt to start RAGFlow go server..."
+                wait_for_server "http://127.0.0.1:9380/api/v1/system/healthz" "ragflow_server"
+                echo "Starting RAGFlow go server..."
+                bin/server_main
+                sleep 1;
+            done
+        ) &
     fi
 fi
 
 
 if [[ "${ENABLE_ADMIN_SERVER}" -eq 1 ]]; then
-    while true; do
-        echo "Attempt to start Admin python server..."
-        "$PY" admin/server/admin_server.py
-        echo "Admin python server started"
-        sleep 1;
-    done &
+    (
+        set +e
+        while true; do
+            echo "Attempt to start Admin python server..."
+            "$PY" admin/server/admin_server.py
+            echo "Admin python server started"
+            sleep 1;
+        done
+    ) &
 
     if [[ "${API_PROXY_SCHEME}" == "hybrid" ]]; then
-        while true; do
-            echo "Attempt to starting Admin go server..."
-            wait_for_server "http://127.0.0.1:9381/api/v1/admin/ping" "admin_server"
-            echo "Starting Admin go server..."
-            bin/admin_server
-            sleep 1;
-        done &
+        (
+            set +e
+            while true; do
+                echo "Attempt to starting Admin go server..."
+                wait_for_server "http://127.0.0.1:9381/api/v1/admin/ping" "admin_server"
+                echo "Starting Admin go server..."
+                bin/admin_server
+                sleep 1;
+            done
+        ) &
     fi
 fi
 
 if [[ "${ENABLE_DATASYNC}" -eq 1 ]]; then
     echo "Starting data sync..."
-    while true; do
-        "$PY" rag/svr/sync_data_source.py &
-        wait;
-        sleep 1;
-    done &
+    (
+        set +e
+        while true; do
+            "$PY" rag/svr/sync_data_source.py &
+            wait;
+            sleep 1;
+        done
+    ) &
 fi
 
 if [[ "${ENABLE_MCP_SERVER}" -eq 1 ]]; then

@@ -133,7 +133,28 @@ export default defineConfig(({ mode }) => {
     },
   };
 
-  const proxy = proxySchemes[proxyScheme] || proxySchemes.python;
+  const schemeProxy = proxySchemes[proxyScheme] || proxySchemes.python;
+
+  // 优先匹配更具体的前缀，否则会被 /api catch-all 抢先
+  const proxy: Record<string, any> = {
+    '/api/v1/providers': {
+      target: 'http://127.0.0.1:9500/',
+      changeOrigin: true,
+      ws: true,
+    },
+    '/api/v1/models': {
+      target: 'http://127.0.0.1:9500/',
+      changeOrigin: true,
+      ws: true,
+    },
+    '/api/financial': {
+      target: 'http://127.0.0.1:9500/',
+      changeOrigin: true,
+      ws: true,
+      rewrite: (path: string) => path.replace(/^\/api\/financial/, ''),
+    },
+    ...schemeProxy,
+  };
 
   return {
     define: {

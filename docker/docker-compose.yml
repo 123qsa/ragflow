@@ -44,6 +44,8 @@ services:
       # - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./service_conf.yaml.template:/ragflow/conf/service_conf.yaml.template
       - ./entrypoint.sh:/ragflow/entrypoint.sh
+      - ../tools/scripts/mysql_migration.py:/ragflow/tools/scripts/mysql_migration.py
+      - ../common/doc_store/es_conn_pool.py:/ragflow/common/doc_store/es_conn_pool.py
     env_file: .env
     networks:
       - ragflow
@@ -92,6 +94,8 @@ services:
       # - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./service_conf.yaml.template:/ragflow/conf/service_conf.yaml.template
       - ./entrypoint.sh:/ragflow/entrypoint.sh
+      - ../tools/scripts/mysql_migration.py:/ragflow/tools/scripts/mysql_migration.py
+      - ../common/doc_store/es_conn_pool.py:/ragflow/common/doc_store/es_conn_pool.py
     env_file: .env
     networks:
       - ragflow
